@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { ListItem, Left, Right, Body, Thumbnail } from 'native-base'
+import { ListItem, Left, Right, Body, Thumbnail, Button } from 'native-base'
 import Time from './Time'
 
 const Article = (props) => {
-  const { article } = props
+  const { article, onPress } = props
   const { description, publishedAt, title, url, urlToImage } = article
 
   return (
@@ -21,7 +21,12 @@ const Article = (props) => {
         </View>
       </Body>
       <Right>
-
+        <Button
+          onPress={() => onPress({ title, url })}
+          transparent
+        >
+          <Text>View</Text>
+        </Button>
       </Right>
     </ListItem>
   )

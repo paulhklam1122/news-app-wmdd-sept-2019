@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert, Text } from 'react-native'
+import { Alert, Share } from 'react-native'
 import { getArticles } from '../../service/api'
 import TabContent from '../tabs/TabContent'
 
@@ -20,6 +20,7 @@ class TabContentContainer extends Component {
   }
 
   // API Call Functions
+
   fetchNews = async (source) => {
     getArticles(source).then(articles => {
       this.setState({
@@ -31,6 +32,40 @@ class TabContentContainer extends Component {
     })
   }
 
+  // Handler Functions
+
+  handleArticlePress = ({ title, url }) => {
+    this.setState({
+      modalVisible: true,
+      articleData: {
+        title,
+        url
+      }
+    })
+  }
+
+  handleArticleModalClose = () => {
+    console.log('close button pressed')
+    this.setState({
+      modalVisible: false,
+      articleData: {}
+    })
+  }
+
+  handleArticleShare = (title, url) => {
+    const message = `${title}\n\Read More @${url}\n\n Shared via RN News App`
+    Share.share(
+      {
+        title,
+        message,
+        url: message
+      },
+      {
+        dialogTitle: `Share ${title}`
+      }
+    )
+  }
+
   render() {
     const { articles, articleData, isLoading, modalVisible } = this.state
     return (
@@ -38,6 +73,9 @@ class TabContentContainer extends Component {
         articles={articles}
         articleData={articleData}
         isLoading={isLoading}
+        onArticlePress={this.handleArticlePress}
+        onArticleModalClose={this.handleArticleModalClose}
+        onArticleShare={this.handleArticleShare}
         modalVisible={modalVisible}
       />
     )
